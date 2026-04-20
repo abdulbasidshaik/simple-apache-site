@@ -1,0 +1,31 @@
+name: Deploy Apache Site
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-apache:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Apache
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y apache2
+
+      - name: Copy website files to Apache directory
+        run: |
+          sudo cp -r ./website/* /var/www/html/
+
+      - name: Restart Apache
+        run: |
+          sudo systemctl restart apache2
+
+      - name: Verify Apache is running
+        run: |
+          sudo systemctl status apache2
