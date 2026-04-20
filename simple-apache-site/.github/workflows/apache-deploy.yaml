@@ -1,4 +1,4 @@
-name: Deploy Apache Site
+name: Apache Deployment
 
 on:
   push:
@@ -18,14 +18,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y apache2
 
-      - name: Copy website files to Apache directory
+      - name: Copy website files
         run: |
-          sudo cp -r ./website/* /var/www/html/
+          sudo cp -r public-html/* /var/www/html/
 
       - name: Restart Apache
         run: |
           sudo systemctl restart apache2
 
-      - name: Verify Apache is running
+      - name: Verify deployment
         run: |
-          sudo systemctl status apache2
+          curl -f http://localhost || exit 1
